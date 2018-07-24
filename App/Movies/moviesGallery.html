@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="text-center ">
+            <h1 id="the-header" class="bg-warning text-center d-inline-block">
+                The
+                <span class="text-danger">MOVIES</span> Album</h1>
+        </div>
+    </div>
+    <div>
+        <h6 class="bg-warning mb-0"> Instructions: </h6>
+        <h6 class="bg-warning mb-0">1) Use Search-box to search movies</h6>
+        <h6 class="bg-warning mb-0">2) click item in opened list to add into gallery</h6>
+        <h6 class="bg-warning">3) Dobble-click a movie picture to see movie datails</h6>
+    </div>
+    <div>
+        <!-- <div ng-controller="moviesCtrl"> -->
+        <form class="search-box my-2">
+            <input type="text" class="bg-info text-dark form-control" placeholder="Search movie" ng-model="aFilter" ng-change="updateSearch(aFilter)">
+            <div class="search-results list-group">
+                <a class="list-group-item list-group-item-action" ng-repeat="(key, value) in listItems" ng-click="addMovie(value)">{{key}}</a>
+            </div>
+        </form>
+        <ul class="list-unstyled mb-0 mt-0 border-top" ng-repeat="movie in moviesArr" ng-class="{'mb-5':$last}">
+            <yg-movie></yg-movie>
+        </ul>
+    </div>
+</div>

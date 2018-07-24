@@ -1,0 +1,29 @@
+
+<div class="container">
+<div class="media bg-info">
+    <img class="align-self-center mr-3" src="{{image}}" alt="Generic placeholder image">
+    <div class="media-body">
+        <div class="text-center mt-4">
+        <a ng-href={{imdbUrl}} target="new"><h3 class="mt-0">{{name}}</h3></a>
+        </div>
+            <div class="container-fluid">
+		    <dl class="row">
+            <dt class="col-sm-2">Released</dt>
+            <dd class="col-sm-10">{{rDate}}</dd>
+            <dt class="col-sm-2">Length</dt>
+            <dd class="col-sm-10">{{length}}</dd>
+            <dt class="col-sm-2">Actors</dt>
+            <dd class="col-sm-10"><span ng-repeat="actor in actors">{{actor}}<span ng-if="!$last">, </span></span></dd>
+            <dt class="col-sm-2">Director</dt>
+            <dd class="col-sm-10">{{director}}</dd>
+            <dt class="col-sm-2">Genere</dt>
+            <dd class="col-sm-10">{{genre}}</dd>
+            <dt class="col-sm-2">Popularity</dt>
+            <dd class="col-sm-10">{{popularity}}</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">{{description}}</dd>
+        </dl>
+            </div>
+    </div>
+  </div>
+  </div>

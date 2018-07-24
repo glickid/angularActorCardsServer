@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="fixed row justify-content-center">
+        <div class="text-center ">
+            <h1 id="the-header" class="bg-warning text-center d-inline-block">
+                <span class="text-primary">Beautiful</span> and
+                <span class="text-danger">Sexiest</span> Actresses</h1>
+        </div>
+    </div>
+    <div><!-- <div ng-controller="actorCtrl"> -->
+        <div class="input-group mb-5 mt-5">
+            <input type="text" class="bg-info text-dark form-control" placeholder="Search Actress in Gallery" ng-model="aFilter">
+            <!-- <label for="orderby">Order By:</label> -->
+        </div>
+        <form class="search-box my-2">
+            <input type="text" class="bg-info text-dark form-control" placeholder="Search Actress in TMDB" ng-model="input" ng-change="searchActress(input)">
+            <div class="search-results list-group">
+                <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in actressList" ng-click="addActress(value)">{{key}}</a>
+            </div>
+        </form>
+
+        <div class="input-group mb-5 mt-5">
+            <label id="search-label" class="bg-dark text-white form-control" for="orderby">Choose field to order by:</label>
+            <select class="bg-info text-dark form-control" name="orderby" ng-model="selectedName" ng-options="x for (x,y) in fields"
+                ng-change="changeOrderBy(selectedName)">
+                <option></option>
+            </select>
+            <!-- <p>{{selectedName}}</p> -->
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-3 d-flex align-items-stretch mb-2" ng-repeat="actor in actorArr | filter : actorFilter | orderBy: propName : reverse">
+                <div class="card" ng-class="{'card-selected' : actor === chosenActor}" ng-mouseover="updateOverClass(actor)" ng-mouseleave="updateMouseLeave(actor)">
+                    <img alt="Card image cap " class="card-img-top img-fluid" ng-src={{actor.imgUrl}}>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <span ng-click="changeOrderBy('fname')">{{actor.fname+ " "}}</span>
+                            <span ng-click="changeOrderBy('lname')">{{actor.lname}}</span>
+                        </h4>
+                        <h5 ng-click="changeOrderBy('bday')"> Birthday {{actor.bday | date : dd.MM.y}}</h5>
+                        <a ng-href={{actor.imdbUrl}} target="new">IMDB CARD</a>
+                        <p class="card-text">{{actor.text}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

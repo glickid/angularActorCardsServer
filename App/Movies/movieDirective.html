@@ -1,0 +1,11 @@
+<li class="media bg-info mb-0 mt-0">
+    <img class="mt-3 ml-1" ng-src="{{movie.imgUrl}}" alt="poster" width="50" ng-dblclick="showMovieDetails(movie.tmdbID)">
+    <div class="media-body">
+        <a ng-href={{movie.imdbUrl}} target="new"><h5 class="mt-0 mb-1 mx-2">{{movie.name}}</h5></a>
+        <ul id="inner_ul" class="d-flex list-group mx-2">
+            <li>Length : {{movie.length}}</li>
+            <li>Actors: <span ng-repeat="actor in movie.actors">{{actor}} <span ng-if="!$last">,</span></span></li>
+            <li>Director: {{movie.director}}</li>
+        </ul>
+    </div>
+</li>
