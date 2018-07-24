@@ -86,7 +86,7 @@ a:hover {
 }
 
 body {
-    background-image: url("/assets/Movie.jpg");
+    background-image: url("assets/Movie.jpg");
     background-repeat: repeat-x repeat-y;
     /* background-size: 85% 90%; */
     background-position: top center; 
