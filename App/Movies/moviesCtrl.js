@@ -38,4 +38,12 @@ actorApp.controller("moviesCtrl", function ($scope, $location, movieService) {
     $scope.showMovieDetails = function (tmdbID) {
         $location.path("/movies/" + tmdbID);
     }
+
+    $scope.removeMovie = function (movie) {
+        movieService.deleteMovie(movie).then(function(response) {
+            $scope.movieArr = response;
+        }, function (err) {
+            console.log(err);
+        })
+    }
 });

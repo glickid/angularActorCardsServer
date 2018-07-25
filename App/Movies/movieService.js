@@ -3,7 +3,8 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
 
     var API_KEY = "bce8cf411be52423d49e88adaa634d4a";
 
-    function Movie(name, tmdbID, length, actors, director, poster, imdbUrl, description) {
+    function Movie(id, name, tmdbID, length, actors, director, poster, imdbUrl, description) {
+        this.id = id;
         this.name = name;
         this.tmdbID = tmdbID;
         this.length = min2HourStr.convMin2HourStr(length); //toString();
@@ -36,24 +37,57 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
                     director = response.data.credits.crew[i].name;
             }
 
-            var aMovie = new Movie(response.data.title,
-                response.data.id,
-                response.data.runtime,
-                actors,
-                director,
-                response.data.poster_path,
-                response.data.imdb_id,
-                response.data.overview);
+            var index = getMovieByTmdbID(response.data.id);
+            if (index)
+            {
+                moviesArr[index].name = name;
+                moviesArr[index].tmdbID = tmdbID;
+                moviesArr[index].length = min2HourStr.convMin2HourStr(length); //toString();
+                moviesArr[index].actors = actors
+                moviesArr[index].director = director;
+                moviesArr[index].imgUrl = "https://image.tmdb.org/t/p/w200/" + poster;
+                moviesArr[index].imdbUrl = "https://www.imdb.com/title/" + imdbUrl;
+                moviesArr[index].text = description;
+            }
+            else
+            {
+                var aMovie = new Movie(0, response.data.title,
+                    response.data.id,
+                    response.data.runtime,
+                    actors,
+                    director,
+                    response.data.poster_path,
+                    response.data.imdb_id,
+                    response.data.overview);
 
-            moviesArr.unshift(aMovie);
+                moviesArr.unshift(aMovie);
+                index = 0;
+            }     
 
-            if (needToPost) {
-                var json = { name: response.data.title, tmdbID: response.data.imdb_id};
+            if (moviesArr[index].id === 0) {
+                var json = { name: response.data.title, 
+                             tmdbID: response.data.id,
+                             runtime: response.data.runtime,
+                             actors: actors,
+                             director: director,
+                             poster_path: response.data.poster_path,
+                             imdbID: response.data.imdb_id,
+                             text: response.data.overview};
 
                 $http.post("https://json-server-heroku-sosqnwwrnt.now.sh/movies",
                     json)
                     .then(function (success) {
-                        console.log(success);
+                        // console.log(success);
+                        var index = getMovieByTmdbID(success.data.tmdbID);
+                        if (index >= 0)
+                        {
+                            moviesArr[index].id = success.data.id;
+                        }
+                        else
+                        {
+                            //unexpected!
+                            console.log("failed to add  " + response.data.title);
+                        }
                     },
                         function (err) {
                             console.log("failed to post " + response.data.title);
@@ -79,9 +113,20 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
             var dataArr = response["data"];
 
             for (var i = 0; i < dataArr.length; i++) {
-                $timeout(
-                    addMovie(dataArr[i].tmdbID, false),
-                    (300 + i * 100));
+                // $timeout(
+                //     addMovie(dataArr[i].tmdbID, false),
+                //     (300 + i * 100));
+                var aMovie = new Movie(dataArr[i].id, 
+                    dataArr[i].name,
+                    dataArr[i].tmdbID,
+                    dataArr[i].runtime,
+                    dataArr[i].actors,
+                    dataArr[i].director,
+                    dataArr[i].poster_path,
+                    dataArr[i].imdb_id,
+                    dataArr[i].text);
+
+                moviesArr.unshift(aMovie);
             }
             async.resolve(moviesArr);
         }, function (error) {
@@ -116,10 +161,10 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
         return async.promise;
     }
 
-    function getMovieByID(tmdbID) {
+    function getMovieByTmdbID(tmdbID) {
         for (var i = 0; i < moviesArr.length; i++) {
             if (tmdbID === moviesArr[i].tmdbID)
-                return moviesArr[i];
+                return i;
         }
 
         return undefined;
@@ -175,11 +220,39 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
     function getMoviesArr() {
         return moviesArr;
     }
+
+    function deleteMovie(movie) {
+        var async = $q.defer();
+
+        if (movie.id != undefined) {
+            var theUrl = "https://json-server-heroku-sosqnwwrnt.now.sh/movies/" + movie.id;
+
+            $http.delete(theUrl).then(function (response) {
+                //console.log(JSON.stringify(response));
+                var index = moviesArr.indexOf(movie);
+                if (index > -1) {
+                    moviesArr.splice(index, 1);
+                }
+                async.resolve(moviesArr);
+            }, function (error) {
+                $log.error(JSON.stringify(error));
+                async.reject("failed to delete " + movie.name);
+            });
+        }
+        else {
+            $log.error("Movie " + movie.name + " id is undefined");
+            async.reject("failed to delete " + movie.name);
+        }
+
+        return async.promise;
+    }
+
     return {
         addMovie: addMovie,
         serachMovie: serachMovie,
         getMovieDetails: getMovieDetails,
         getMoviesArr: getMoviesArr,
-        loadMovies: loadMovies
+        loadMovies: loadMovies,
+        deleteMovie: deleteMovie
     };
 });

@@ -106,4 +106,17 @@ body {
     width: 100%;
   }
 
+  .bin {
+    position: relative;
+    bottom : 60px;
+    right: 30px;
+    transform:translate(9999px);
+    opacity: 0;
+    background-color: rgb(199, 23, 23);
+  }
   
+  #movie-card:hover i {
+    transition: opacity 1s linear;
+    transform:translate(0);
+    opacity: 1 !important;
+  }
