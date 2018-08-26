@@ -113,20 +113,21 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
             var dataArr = response["data"];
 
             for (var i = 0; i < dataArr.length; i++) {
-                // $timeout(
-                //     addMovie(dataArr[i].tmdbID, false),
-                //     (300 + i * 100));
-                var aMovie = new Movie(dataArr[i].id, 
-                    dataArr[i].name,
-                    dataArr[i].tmdbID,
-                    dataArr[i].runtime,
-                    dataArr[i].actors,
-                    dataArr[i].director,
-                    dataArr[i].poster_path,
-                    dataArr[i].imdb_id,
-                    dataArr[i].text);
+                $timeout(
+                    addMovie(dataArr[i].tmdbID, false),
+                    (300 + i * 100));
 
-                moviesArr.unshift(aMovie);
+                // var aMovie = new Movie(dataArr[i].id, 
+                //     dataArr[i].name,
+                //     dataArr[i].tmdbID,
+                //     dataArr[i].runtime,
+                //     dataArr[i].actors,
+                //     dataArr[i].director,
+                //     dataArr[i].poster_path,
+                //     dataArr[i].imdb_id,
+                //     dataArr[i].text);
+
+                // moviesArr.unshift(aMovie);
             }
             async.resolve(moviesArr);
         }, function (error) {
