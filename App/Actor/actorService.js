@@ -20,7 +20,7 @@ actorApp.factory("actorService", function ($http, $log, $q, $timeout) {
         
         actorArr.splice(0, actorArr.length);
 
-        $http.get("https://json-server-heroku-sosqnwwrnt.now.sh/actors").then(function (response) {
+        $http.get("https://json-server-heroku-duiintdxyn.now.sh/actors").then(function (response) {
             //console.log(JSON.stringify(response));
             var dataArr = response["data"];
             for (var i = 0; i < dataArr.length; i++) {
@@ -69,7 +69,7 @@ actorApp.factory("actorService", function ($http, $log, $q, $timeout) {
             var json = {fname: actress.fname, lname:actress.lname, bday:actress.bday,
                         imageUrl:actress.imgUrl, imdbUrl:actress.imdbUrl, text:actress.text};
 
-            $http.post("https://json-server-heroku-sosqnwwrnt.now.sh/actors",
+            $http.post("https://json-server-heroku-duiintdxyn.now.sh/actors",
                         json)
                 .then (function(success) {
                     console.log(success)

@@ -40,14 +40,14 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
             var index = getMovieByTmdbID(response.data.id);
             if (index)
             {
-                moviesArr[index].name = name;
-                moviesArr[index].tmdbID = tmdbID;
-                moviesArr[index].length = min2HourStr.convMin2HourStr(length); //toString();
+                moviesArr[index].name = response.data.title;
+                moviesArr[index].tmdbID = response.data.id;
+                moviesArr[index].length = min2HourStr.convMin2HourStr(response.data.runtime); //toString();
                 moviesArr[index].actors = actors
                 moviesArr[index].director = director;
-                moviesArr[index].imgUrl = "https://image.tmdb.org/t/p/w200/" + poster;
-                moviesArr[index].imdbUrl = "https://www.imdb.com/title/" + imdbUrl;
-                moviesArr[index].text = description;
+                moviesArr[index].imgUrl = "https://image.tmdb.org/t/p/w200/" + response.data.poster_path;
+                moviesArr[index].imdbUrl = "https://www.imdb.com/title/" + response.data.imdb_id;
+                moviesArr[index].text = response.data.overview;
             }
             else
             {
@@ -64,7 +64,7 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
                 index = 0;
             }     
 
-            if (moviesArr[index].id === 0) {
+            if ((needToPost) && (moviesArr[index].id === 0)) {
                 var json = { name: response.data.title, 
                              tmdbID: response.data.id,
                              runtime: response.data.runtime,
@@ -74,7 +74,7 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
                              imdbID: response.data.imdb_id,
                              text: response.data.overview};
 
-                $http.post("https://json-server-heroku-sosqnwwrnt.now.sh/movies",
+                $http.post("https://json-server-heroku-duiintdxyn.now.sh/movies",
                     json)
                     .then(function (success) {
                         // console.log(success);
@@ -108,7 +108,7 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
 
         moviesArr.length = 0;
 
-        $http.get("https://json-server-heroku-sosqnwwrnt.now.sh/movies").then(function (response) {
+        $http.get("https://json-server-heroku-duiintdxyn.now.sh/movies").then(function (response) {
             //console.log(JSON.stringify(response));
             var dataArr = response["data"];
 
@@ -226,7 +226,7 @@ actorApp.factory("movieService", function ($http, $log, $q, $timeout, min2HourSt
         var async = $q.defer();
 
         if (movie.id != undefined) {
-            var theUrl = "https://json-server-heroku-sosqnwwrnt.now.sh/movies/" + movie.id;
+            var theUrl = "https://json-server-heroku-duiintdxyn.now.sh/movies/" + movie.id;
 
             $http.delete(theUrl).then(function (response) {
                 //console.log(JSON.stringify(response));
