@@ -49,7 +49,7 @@ actorApp.controller("actorCtrl", function ($scope, actorService) {
         $scope.chosenActor = actor;
     }
     $scope.updateMouseLeave = function (actor) {
-        $scope.chosenActor = actor;
+        $scope.chosenActor = "";
     }
 
     $scope.actressList = {};
@@ -77,7 +77,10 @@ actorApp.controller("actorCtrl", function ($scope, actorService) {
             $scope.actressList = {};
             $scope.input = "";
             if ($scope.propName !== '-addedAt')
+            {
                 $scope.changeOrderBy('-addedAt');
+                $scope.selectedName = "";
+            }
         }, function (error) {
             console.log("error")
         });
