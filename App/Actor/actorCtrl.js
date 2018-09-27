@@ -76,7 +76,8 @@ actorApp.controller("actorCtrl", function ($scope, actorService) {
             $scope.actorArr = actorArr;
             $scope.actressList = {};
             $scope.input = "";
-            $scope.changeOrderBy('-addedAt');
+            if ($scope.propName !== '-addedAt')
+                $scope.changeOrderBy('-addedAt');
         }, function (error) {
             console.log("error")
         });
