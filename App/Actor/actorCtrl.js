@@ -62,7 +62,7 @@ actorApp.controller("actorCtrl", function ($scope, actorService) {
             actorService.searchActress(input, $scope.actressList).then(function (success) {
                 //do_nothing
             }, function (error) {
-                $log.error(error);
+                console.error(error);
                 $scope.actressList = [];
             });
         }
