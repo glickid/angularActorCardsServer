@@ -13,8 +13,9 @@
         </div>
         <form class="search-box my-2">
             <input type="text" class="bg-info text-dark form-control" placeholder="Search Actress in TMDB" ng-model="input" ng-change="searchActress(input)">
-            <div class="search-results list-group">
-                <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in actressList" ng-click="addActress(value)">{{key}}</a>
+            <div class="search-results list-group clearfix">
+                <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="actress in actressList" ng-click="addActress(actress.id)">
+                    <span class="float-left">{{actress.name}}</span><img alt="actress image" ng-src={{actress.image}} class="float-right icon-img"></a>
             </div>
         </form>
 

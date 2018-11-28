@@ -52,29 +52,29 @@ actorApp.controller("actorCtrl", function ($scope, actorService) {
         $scope.chosenActor = "";
     }
 
-    $scope.actressList = {};
+    $scope.actressList = [];
 
     $scope.searchActress = function (input) {
         //start search only after 3 charachters of input
         if (input.length > 2) {
-            $scope.actressList = {};
+            $scope.actressList = [];
 
             actorService.searchActress(input, $scope.actressList).then(function (success) {
                 //do_nothing
             }, function (error) {
                 $log.error(error);
-                $scope.actressList = {};
+                $scope.actressList = [];
             });
         }
         else {
-            $scope.actressList = {};
+            $scope.actressList = [];
         }
     }
 
     $scope.addActress = function (id) {
         actorService.addActress(id).then(function (actorArr) {
             $scope.actorArr = actorArr;
-            $scope.actressList = {};
+            $scope.actressList = [];
             $scope.input = "";
             if ($scope.propName !== '-addedAt')
             {

@@ -102,7 +102,8 @@ actorApp.factory("actorService", function ($http, $log, $q, $timeout) {
                     var detailsUrl = " https://api.themoviedb.org/3/person/" + actorId + "?api_key=" + API_KEY + "&language=en-US";
                     $http.get(detailsUrl).then(function (response1) {
                         if (response1.data.gender === 1) {
-                            actressList[response1.data.name] = response1.data.id;
+                            actressList.push( {"name" : response1.data.name, "id": response1.data.id, 
+                                                "image" : "https://image.tmdb.org/t/p/w200" + response1.data.profile_path});
                             async.resolve(actressList);
                         }
                     }, function (error) {
