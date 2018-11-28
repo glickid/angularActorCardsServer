@@ -20,7 +20,7 @@ actorApp.controller("actorCtrl", function ($scope, actorService) {
     //filter a spcific actor on the view
     $scope.actorFilter = function (actor) {
         var lowerFname = actor.fname.toLowerCase();
-        var lowerLname = actor.lname.toLowerCase();
+        var lowerLname = actor.lname ? actor.lname.toLowerCase() : "";
         if (lowerFname.includes($scope.aFilter) || lowerLname.includes($scope.aFilter) ||
             actor.fname.includes($scope.aFilter) || actor.lname.includes($scope.aFilter)) {
             return true;
